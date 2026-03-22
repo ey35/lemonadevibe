@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🍋 Lemonade Empire</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header id="header">
+    <div id="header-left">
+      <h1>🍋 Lemonade Empire</h1>
+      <div id="day-weather">
+        <span id="day-display">Day 1</span>
+        <span id="weather-display">☀️ Sunny</span>
+      </div>
+    </div>
+    <div id="header-stats">
+      <div class="stat-pill" id="money-pill">
+        <span class="stat-icon">💰</span>
+        <span id="money-display">$10.00</span>
+      </div>
+      <div class="stat-pill">
+        <span class="stat-icon">📦</span>
+        <span id="cups-display">0 cups</span>
+      </div>
+      <div class="stat-pill">
+        <span class="stat-icon">⭐</span>
+        <span id="rep-display">Rep: 50</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN LAYOUT -->
+  <div id="app">
+
+    <!-- LEFT PANEL: Stand & Controls -->
+    <div id="left-panel">
+
+      <!-- Stand Visual -->
+      <div id="stand-scene">
+        <div id="sky-bg"></div>
+        <div id="sun">☀️</div>
+        <div id="clouds">
+          <div class="cloud" style="left:10%;animation-delay:0s">☁️</div>
+          <div class="cloud" style="left:55%;animation-delay:3s">☁️</div>
+        </div>
+        <div id="stand-container">
+          <div id="stand-sign">
+            <span id="sign-name">My Stand</span>
+            <span id="sign-price"></span>
+          </div>
+          <div id="stand-body">
+            <div id="stand-lemon">🍋</div>
+            <div id="stand-pitcher">🫗</div>
+            <div id="stand-counter">
+              <div id="cup-stack"></div>
+            </div>
+          </div>
+          <div id="stand-legs"></div>
+          <div id="customer-area">
+            <div id="customer-queue"></div>
+          </div>
+        </div>
+        <div id="ground"></div>
+      </div>
+
+      <!-- Pricing & Recipe -->
+      <div class="panel-card" id="recipe-card">
+        <h2 class="card-title">🧪 Today's Recipe</h2>
+        <div id="recipe-row">
+          <div class="recipe-item">
+            <label>🍋 Lemons per cup</label>
+            <div class="num-input">
+              <button class="num-btn" onclick="adjustRecipe('lemons',-1)">−</button>
+              <span id="lemons-val">2</span>
+              <button class="num-btn" onclick="adjustRecipe('lemons',1)">+</button>
+            </div>
+            <small>Cost: $<span id="lemon-cost">0.30</span>/lemon</small>
+          </div>
+          <div class="recipe-item">
+            <label>🍬 Sugar per cup</label>
+            <div class="num-input">
+              <button class="num-btn" onclick="adjustRecipe('sugar',-1)">−</button>
+              <span id="sugar-val">1</span>
+              <button class="num-btn" onclick="adjustRecipe('sugar',1)">+</button>
+            </div>
+            <small>Cost: $<span id="sugar-cost">0.10</span>/tbsp</small>
+          </div>
+          <div class="recipe-item">
+            <label>🧊 Ice cubes</label>
+            <div class="num-input">
+              <button class="num-btn" onclick="adjustRecipe('ice',-1)">−</button>
+              <span id="ice-val">1</span>
+              <button class="num-btn" onclick="adjustRecipe('ice',1)">+</button>
+            </div>
+            <small>Cost: $<span id="ice-cost">0.05</span>/cube</small>
+          </div>
+        </div>
+        <div id="recipe-stats">
+          <span>Cost per cup: <strong id="cost-per-cup">$0.75</strong></span>
+          <span>Quality: <strong id="quality-stars">⭐⭐⭐</strong></span>
+        </div>
+      </div>
+
+      <!-- Pricing -->
+      <div class="panel-card" id="price-card">
+        <h2 class="card-title">💵 Set Your Price</h2>
+        <div id="price-row">
+          <button class="num-btn big" onclick="adjustPrice(-0.25)">−</button>
+          <span id="price-display">$1.00</span>
+          <button class="num-btn big" onclick="adjustPrice(0.25)">+</button>
+        </div>
+        <div id="demand-bar-wrap">
+          <label>Demand Forecast:</label>
+          <div id="demand-bar"><div id="demand-fill"></div></div>
+          <span id="demand-label">Good</span>
+        </div>
+      </div>
+
+      <!-- Make Lemonade -->
+      <div class="panel-card" id="make-card">
+        <h2 class="card-title">🏭 Prepare Stock</h2>
+        <div id="make-row">
+          <div class="recipe-item">
+            <label>Cups to make</label>
+            <div class="num-input">
+              <button class="num-btn" onclick="adjustBatch(-5)">−5</button>
+              <button class="num-btn" onclick="adjustBatch(-1)">−</button>
+              <span id="batch-val">10</span>
+              <button class="num-btn" onclick="adjustBatch(1)">+</button>
+              <button class="num-btn" onclick="adjustBatch(5)">+5</button>
+            </div>
+          </div>
+          <div id="batch-cost-row">
+            <span>Batch cost: <strong id="batch-cost">$7.50</strong></span>
+            <span>Your cash: <strong id="cash-available">$10.00</strong></span>
+          </div>
+        </div>
+        <button id="make-btn" class="action-btn" onclick="makeLemonade()">🍋 Make Lemonade!</button>
+      </div>
+
+      <!-- Open for Business -->
+      <div class="panel-card" id="sell-card">
+        <h2 class="card-title">🛒 Sell!</h2>
+        <div id="sell-info">
+          <span>In stock: <strong id="stock-count">0</strong> cups</span>
+          <span>Day profit: <strong id="day-profit">$0.00</strong></span>
+        </div>
+        <button id="sell-btn" class="action-btn green" onclick="openShop()">☀️ Open Stand!</button>
+        <div id="sell-progress-wrap" style="display:none">
+          <div id="sell-progress-bar"><div id="sell-progress-fill"></div></div>
+          <span id="sell-status">Selling...</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- CENTER PANEL: Log & Stats -->
+    <div id="center-panel">
+
+      <!-- Tabs -->
+      <div id="tab-bar">
+        <button class="tab-btn active" onclick="switchTab('log')">📋 Log</button>
+        <button class="tab-btn" onclick="switchTab('stats')">📊 Stats</button>
+        <button class="tab-btn" onclick="switchTab('achievements')">🏆 Achievements</button>
+      </div>
+
+      <div id="tab-log" class="tab-content active">
+        <div id="event-log"></div>
+      </div>
+
+      <div id="tab-stats" class="tab-content">
+        <div id="stats-grid">
+          <div class="stat-box"><span class="sval" id="stat-total-sold">0</span><span class="slabel">Cups Sold</span></div>
+          <div class="stat-box"><span class="sval" id="stat-total-earned">$0</span><span class="slabel">Total Earned</span></div>
+          <div class="stat-box"><span class="sval" id="stat-best-day">$0</span><span class="slabel">Best Day</span></div>
+          <div class="stat-box"><span class="sval" id="stat-days">1</span><span class="slabel">Days Played</span></div>
+          <div class="stat-box"><span class="sval" id="stat-customers">0</span><span class="slabel">Happy Customers</span></div>
+          <div class="stat-box"><span class="sval" id="stat-wasted">0</span><span class="slabel">Cups Wasted</span></div>
+        </div>
+        <canvas id="revenue-chart" width="400" height="200"></canvas>
+      </div>
+
+      <div id="tab-achievements" class="tab-content">
+        <div id="achievements-grid"></div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT PANEL: Shop -->
+    <div id="right-panel">
+      <h2 class="panel-title">🏪 Upgrade Shop</h2>
+
+      <div id="shop-tabs">
+        <button class="shop-tab active" onclick="switchShopTab('equipment')">⚙️ Equipment</button>
+        <button class="shop-tab" onclick="switchShopTab('marketing')">📣 Marketing</button>
+        <button class="shop-tab" onclick="switchShopTab('special')">✨ Special</button>
+      </div>
+
+      <div id="shop-equipment" class="shop-tab-content active">
+        <!-- Populated by JS -->
+      </div>
+      <div id="shop-marketing" class="shop-tab-content">
+        <!-- Populated by JS -->
+      </div>
+      <div id="shop-special" class="shop-tab-content">
+        <!-- Populated by JS -->
+      </div>
+
+    </div>
+  </div>
+
+  <!-- NOTIFICATION POPUP -->
+  <div id="notification"></div>
+
+  <!-- ACHIEVEMENT POPUP -->
+  <div id="achievement-popup"></div>
+
+  <!-- END OF DAY MODAL -->
+  <div id="modal-overlay" style="display:none">
+    <div id="modal">
+      <h2 id="modal-title">End of Day</h2>
+      <div id="modal-body"></div>
+      <button class="action-btn" onclick="nextDay()">Next Day ➡️</button>
+    </div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
